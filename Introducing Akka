@@ -1,0 +1,10 @@
+Akka provides - 
+
+Multi-threaded behavior without the use of low-level concurrency constructs like atomics or locks — relieving 
+from even thinking about memory visibility issues.
+
+Transparent remote communication between systems and their components — relieving from writing and
+maintaining difficult networking code.
+
+A clustered, high-availability architecture that is elastic, scales in or out, on demand — enables to 
+deliver a truly reactive system.
