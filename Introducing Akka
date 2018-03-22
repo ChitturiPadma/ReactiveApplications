@@ -8,3 +8,28 @@ maintaining difficult networking code.
 
 A clustered, high-availability architecture that is elastic, scales in or out, on demand — enables to 
 deliver a truly reactive system.
+
+Why modern systems need a new programming model ?
+
+The actor model proposed long ago handles parallel processing in a high performance network.
+As of today, organizations are building distributed systems with demanding requirements that cannot be fully solved 
+with traditional OOP model; which can be addressd by the actor model with high efficiency.
+
+Challenge of Encapsulation: The core pillar of OOP is encapsulation which exposes the state of the object with safe
+operations (that protect the invariant nature of the encapsulated data).
+
+When multiple threads try to access the same instance (access the same method at same time), the encapsulation model of the 
+object doesn't guarantee about what happens in the method. The common approach to solve this problem is to apply locks-
+
+Locks seriously limit concurrency - Heavy operation CPU to suspend the thread and restore it
+Due to locks, threads become unresponsive which is not acceptable. We wan to keep user-facing parts of applications
+(its UI) to be responsive even when a long background job is running. 
+
+Locks introduce a new menace: deadlocks.
+Hence, 
+Without sufficient locks, the state gets corrupted (when multiple threads access the same method)
+With many locks in place, performance suffers and very easily leads to deadlocks.
+
+Also, locks work well locally. When it comes to coordinating across multiple machines, alternative is to use
+distributed locks. But the distributed lock protocols requires several communication round-trips over the network across 
+machines, hence latency goes for a toss.
