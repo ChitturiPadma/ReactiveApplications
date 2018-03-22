@@ -1,0 +1,37 @@
+Actor model offers -
+Encapsulation without resorting to locks.
+Use the model's cooperative entities reacting to signals, changing state and sending signals to each other to drive the 
+whole application forward.
+Stop worrying about the execution mechanism.
+
+The key difference between passing messages and calling methods is that the messages have no return value. By sending a 
+message, an actor delegates work to another actor. Actors react to messages just like objects 'react" to methods invoked
+on them. Actors execute independently from the senders of a message and they react to incoming messages sequentially, one 
+at a time. 
+
+While each actor processes messages sent to it sequentially, different actors work concurrently with each other so that,
+an actor system can process as many messages simultaneously as the hardware will support.
+
+Behavior of the actor -
+1. The actor adds the message to the end of a queue.
+2. If the actor was not scheduled for execution, it is marked as ready to execute.
+3. A (hidden) scheduler entity takes the actor and starts executing it.
+4. Actor picks the message from the front of the queue.
+5. Actor modifies internal state, sends messages to other actors.
+6. The actor is unscheduled.
+
+Actors have -
+A mailbox (the queue where messages end up).
+A behavior (the state of the actor, internal variables etc.).
+Messages (pieces of data representing a signal, similar to method calls and their parameters).
+An execution environment (the machinery that takes actors that have messages to react to and invokes their message handling code).
+An address (more on this later).
+
+Actors handle error situations gracefully -
+1. The delegated task on the target actor failed due to an error in the task. In this case, the service encapsulated by the 
+target actor is intact, it is only the taks that itself is erroneous. The service actor replies the sender with a message, 
+presenting the error case. 
+
+2. The second case is that when a service actor itself encounters an internal fault . Akka enforces that all actors are
+organized into a tree hierarchy (parent and child actors). When an actor fails, the parent actor is notified and it can react
+to the failure either by restarting the child actor/ re-create the actor or  stop all the actors recursively.
