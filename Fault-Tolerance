@@ -1,0 +1,41 @@
+Building a fault-tolerant application with plain old objects and exception handling is a complex task. Actors simplify this 
+task- instead of single flow handling both normal code and recovery code, actor provides 2 separate flows.
+one for normal logic 
+second for fault recovery logic.
+
+Normal flow consists of actors that handle normal messages whereas recovery flow consists of actors that monitor the
+actors in the normal flow. Actors that monitor other actors are called Supervisors.
+
+Supervisor -> creates and montiros the actors. 
+Supervisor actor handles the crash of an actor and decides what next to do.
+
+Instead of catching exceptions in an actor, we’ll just let the actor crash. The mailbox for a crashed actor is
+suspended until the supervisor in the recovery flow has decided what to do with the exception.
+
+How are Supervisor actors chosen ?
+Any actor that creates actors automatically becomes the supervisor of those actors. It doesn't “catch exceptions;”
+rather it decides what should happen with the crashed actors that it supervises based on the cause of the crash.
+
+The supervisor has four options when deciding what to do with the crashed actor:
+Restart: Actor is re-created from it's Props. The new actor instance uses the ActorRef and handles the next subsequent
+messages.
+Resume: The same actor instance continues to process the messages
+Stop: Actor is terminated. It will no longer processes the messages.
+Escalate: Supervisor escalates the problem to it's parent.
+
+In case of a failed message (for instance, actor handling files encountered a corrupt file, reprocessing the corrupt
+files ends up in a poisoned mailbox - i.e no other message gets processed because the corrupting message is failing 
+over and over again.). Hence Akka choses not to provide the failing message to the mailbox again after a restart.
+(the failing message could be re-sent, iwe are absolutely sure that it will not cause the error).
+
+'Let it crash' model has the following benefits -
+1. Fault isolation
+2. Structure
+3. Redundancy
+4. Replacement
+5. Reboot
+6. Component life cycle
+7. Suspend
+8. Separation of actors
+
+
