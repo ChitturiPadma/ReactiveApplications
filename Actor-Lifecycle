@@ -1,0 +1,21 @@
+During the lifecycle of an actor, there are 3 types of events -
+1. The actor is created and started -start event
+2. Actor is restarted  - restart event
+3. Actor is stopped - stop event.
+
+Start event:
+When an actor instance is created, the actor will be started. The preStart is the called just before the actor is
+started.
+
+Stop event:
+The stop event indicates the end of the actor life cycle and occurs once either by using the stop method on the
+ActorSystem and ActorContext objects or by sending a PoisonPill message to an actor. The postStop is called
+just before the actor is terminated. It is counterpart of the preStart. After the actor is stopped, ActorRef 
+is redirected to the deadLettersActorRef of the actor system (special ActorRef) which receives all messages sent to
+dead actors
+
+Restart event:
+In this event, instance of the actor is replaced. When the restart occurs, the preRestart method of the crashed actor 
+instance is invoked. In this, the crashed actor instance is able to store it's current state before its replaced 
+by the new actor instance.
+
